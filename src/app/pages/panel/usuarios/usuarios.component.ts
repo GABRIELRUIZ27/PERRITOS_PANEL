@@ -104,7 +104,7 @@ export class UsuariosComponent {
     this.idUpdate = dto.id;
     this.usuarioForm.patchValue({
       id: dto.id,
-      nombre: dto.nombreCompleto,
+      nombreCompleto: dto.nombreCompleto,
       correo: dto.correo,
       password: dto.password,
       estatus: dto.estatus,
@@ -115,9 +115,9 @@ export class UsuariosComponent {
   editarUsuario() {
     this.usuario = this.usuarioForm.value as Usuario;
 
-    const rolId = this.usuarioForm.get('rolId')?.value;
-
-    this.usuario.rol = { id: rolId } as Rol;
+    const rolId = 1;
+  
+    this.usuario.rol = { id: rolId, nombreRol: 'Administrador' };
 
     this.spinnerService.show();
     this.usuarioService.put(this.idUpdate, this.usuario).subscribe({
@@ -151,9 +151,9 @@ export class UsuariosComponent {
 
   agregar() {
     this.usuario = this.usuarioForm.value as Usuario;
-    const rolId = 1; // Estableces el valor predeterminado de rolId
+    const rolId = 1; 
   
-    this.usuario.rol = { id: rolId, nombreRol: 'Administrador' }; // Aquí estableces el objeto rol con su id y nombre
+    this.usuario.rol = { id: rolId, nombreRol: 'Administrador' }; 
     this.spinnerService.show();
     this.usuarioService.post(this.usuario).subscribe({
       next: () => {
