@@ -8,7 +8,7 @@
   <p style="color: white">Guardando...</p>
 </ngx-spinner>
 
-<app-page-header headerTitle="Programas sociales"></app-page-header>
+<app-page-header headerTitle="Cátalogo de discapacidades"></app-page-header>
 
 <div class="row">
   <div class="col-12">
@@ -60,58 +60,39 @@
         </div>
 
         <div *ngSwitchCase="3" class="table-responsive">
-          <table class="table table-vcenter card-table">
-            <thead>
-              <tr>
-                <th class="text-center">#</th>
-                <th style="text-transform: none; font-size: inherit">Nombre</th>
-                <th
-                  class="w-1"
-                  style="text-transform: none; font-size: inherit"
-                >
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let discapacidad of discapacidadFilter
-                    | paginate : configPaginator;
-                  let pointIndex = index
-                "
-              >
-                <td class="text-center">
-                  {{
-                    configPaginator.itemsPerPage *
-                      (configPaginator.currentPage - 1) +
-                      pointIndex +
-                      1
-                  }}
-                </td>
-                <td>{{ discapacidad.nombre }}</td>
-
-                <td>
-                  <div class="d-flex justify-content-between">
-                    <button
-                      class="btn btn-warning btn-icon btn-sm"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modal-programa-social"
-                      (click)="setDataModalUpdate(discapacidad)"
-                    >
-                      <i class="ti ti-edit"></i>
-                    </button>
-                    <button
-                      class="btn btn-danger btn-icon btn-sm"
-                      (click)="deleteItem(discapacidades.id, discapacidades.nombre)"
-                    >
-                      <i class="ti ti-eraser"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="container">
+            <div class="d-flex justify-content-center">
+              <table class="table table-vcenter card-table">
+                <thead>
+                  <tr>
+                    <th style="text-transform: none; font-size: inherit" class="text-center">#</th>
+                    <th style="text-transform: none; font-size: inherit">Nombre</th>
+                    <th style="text-transform: none; font-size: inherit" class="w-1">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let discapacidad of discapacidadFilter | paginate: configPaginator; let pointIndex = index">
+                    <td class="text-center">
+                      {{ configPaginator.itemsPerPage * (configPaginator.currentPage - 1) + pointIndex + 1 }}
+                    </td>
+                    <td>{{ discapacidad.nombre }}</td>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <button class="btn btn-warning btn-icon btn-sm" data-bs-toggle="modal"
+                          data-bs-target="#modal-programa-social" (click)="setDataModalUpdate(discapacidad)">
+                          <i class="ti ti-edit"></i>
+                        </button>
+                        <button class="btn btn-danger btn-icon btn-sm" (click)="deleteItem(discapacidades.id, discapacidades.nombre)">
+                          <i class="ti ti-eraser"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
         </div>
 
         <app-no-results *ngSwitchCase="4"></app-no-results>

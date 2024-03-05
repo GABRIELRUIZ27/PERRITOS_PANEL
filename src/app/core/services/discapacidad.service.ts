@@ -10,7 +10,7 @@ import { Discapacidad } from 'src/app/models/discapacidad';
   providedIn: 'root'
 })
 export class DiscapacidadService {
-  route = `${environment.apiUrl}/discapacidad`;
+  route = `${environment.apiUrl}/discapacidades`;
   private _refreshListDiscapacidades$ = new Subject<Discapacidad | null>();
 
   constructor(

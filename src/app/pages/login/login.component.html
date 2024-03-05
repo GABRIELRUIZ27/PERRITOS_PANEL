@@ -5,38 +5,48 @@
 </ngx-spinner>
 
 <div class="page page-center">
-    <div class="container container-normal py-4">
-      <div class="card-container">
-        <div class="card left-card d-flex justify-content-center align-items-center">
-            <img src="/src/assets/images/logo_app.png" class="d-block mx-auto" alt="">
-          </div>
-          
-        <div class="card right-card card2" style="
-        padding-top: 14%;
-    ">
-           
-          <h2 class="h2 text-center mb-4">Inicia sesión con tus datos</h2>
-          <hr>
-          <br>
-          <form [formGroup]="formUserLogin" autocomplete="off" novalidate (ngSubmit)="login()">
-            <div class="mb-3">
-              <label class="form-label">Correo</label>
-              <input type="email" class="form-control" autocomplete="off" formControlName="email" />
-            </div>
-            <br>
-            <div class="mb-2">
-              <label class="form-label"> Contraseña </label>
-              <div class="input-group input-group-flat">
-                <input type="password" class="form-control" autocomplete="off" formControlName="password" />
-              </div>
-            </div>
-            <br>
-            <div class="form-footer">
-              <button type="submit" class="btn btn-secondary w-100" [disabled]="!formUserLogin.valid">Ingresar</button>
-            </div>
-          </form>
+  <div class="container container-tight py-4">
+    <div class="card card-md">
+      <div class="card-stamp">
+        <div class="card-stamp-icon bg-yellow">
+          <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-baidu" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M5 9.5m-1 0a1 1.5 0 1 0 2 0a1 1.5 0 1 0 -2 0" />
+            <path d="M14.463 11.596c1.282 1.774 3.476 3.416 3.476 3.416s1.921 1.574 .593 3.636c-1.328 2.063 -4.892 1.152 -4.892 1.152s-1.416 -.44 -3.06 -.088c-1.644 .356 -3.06 .22 -3.06 .22s-2.055 -.22 -2.47 -2.304c-.416 -2.084 1.918 -3.638 2.102 -3.858c.182 -.222 1.409 -.966 2.284 -2.394c.875 -1.428 3.337 -2.287 5.027 .221z" />
+            <path d="M9 4.5m-1 0a1 1.5 0 1 0 2 0a1 1.5 0 1 0 -2 0" />
+            <path d="M15 4.5m-1 0a1 1.5 0 1 0 2 0a1 1.5 0 1 0 -2 0" />
+            <path d="M19 9.5m-1 0a1 1.5 0 1 0 2 0a1 1.5 0 1 0 -2 0" />
+          </svg>
         </div>
+      </div>
+      <div class="card-body text-center">
+        <h2 class="h2 text-center mb-4">Inicia sesión</h2>
+        <form [formGroup]="formUserLogin" autocomplete="off" novalidate (ngSubmit)="login()">
+          <div class="mb-3">
+            <label class="form-label"><i class="ti ti-dog"></i> Correo</label>
+            <input type="email" class="form-control" autocomplete="off" formControlName="email" style="text-align: center;" />
+          </div>
+          <div class="mb-2">
+            <label class="form-label">
+              <i class="ti ti-bone"></i> Contraseña
+            </label>
+            <div class="input-group input-group-flat">
+              <input type="password" class="form-control" autocomplete="off" formControlName="password" style="text-align: center;" />
+            </div>
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="btn btn-success w-100" [disabled]="!formUserLogin.valid">Ingresar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>
+
+
+
+
+
+
 
