@@ -40,7 +40,7 @@
               class="btn w-30 btn-icon"
               aria-label="Dribbble"
               (click)="exportarDatosAExcel()"
-              title="Descargar excel de programas sociales"
+              title="Descargar excel de discapacidades"
               style="margin-left: 8px; padding-top: 4px; padding-bottom: 4px"
             >
               <i
@@ -76,7 +76,7 @@
             <tbody>
               <tr
                 *ngFor="
-                  let programa of programasSocialesFilter
+                  let discapacidad of discapacidadFilter
                     | paginate : configPaginator;
                   let pointIndex = index
                 "
@@ -89,7 +89,7 @@
                       1
                   }}
                 </td>
-                <td>{{ programa.nombre }}</td>
+                <td>{{ discapacidad.nombre }}</td>
 
                 <td>
                   <div class="d-flex justify-content-between">
@@ -97,13 +97,13 @@
                       class="btn btn-warning btn-icon btn-sm"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-programa-social"
-                      (click)="setDataModalUpdate(programa)"
+                      (click)="setDataModalUpdate(discapacidad)"
                     >
                       <i class="ti ti-edit"></i>
                     </button>
                     <button
                       class="btn btn-danger btn-icon btn-sm"
-                      (click)="deleteItem(programa.id, programa.nombre)"
+                      (click)="deleteItem(discapacidades.id, discapacidades.nombre)"
                     >
                       <i class="ti ti-eraser"></i>
                     </button>
@@ -120,7 +120,7 @@
 
       <div class="card-footer d-flex align-items-center">
         <p class="m-0 text-muted">
-          Total de registros: <b>{{ programasSocialesFilter.length }}</b>
+          Total de registros: <b>{{ discapacidadFilter.length }}</b>
         </p>
         <div class="m-0 ms-auto">
           <pagination-controls
@@ -146,7 +146,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-          {{ isModalAdd ? "Agregar" : "Actualizar" }} programa social
+          {{ isModalAdd ? "Agregar" : "Actualizar" }} discapacidad
         </h5>
         <button
           #closebutton
@@ -157,7 +157,7 @@
         ></button>
       </div>
 
-      <form [formGroup]="programaSocialForm" (ngSubmit)="submit()">
+      <form [formGroup]="discapacidadForm" (ngSubmit)="submit()">
         <div class="modal-body">
           <div class="row">
             <div class="col-lg-12">
@@ -169,26 +169,26 @@
                   formControlName="nombre"
                 />
                 <div
-                  *ngIf="programaSocialForm.get('nombre')?.touched"
+                  *ngIf="discapacidadForm.get('nombre')?.touched"
                   class="error-message"
                 >
                   <div
                     *ngIf="
-                      programaSocialForm.get('nombre')?.hasError('required')
+                      discapacidadForm.get('nombre')?.hasError('required')
                     "
                   >
                     El nombre es obligatorio
                   </div>
                   <div
                     *ngIf="
-                      programaSocialForm.get('nombre')?.hasError('minlength')
+                      discapacidadForm.get('nombre')?.hasError('minlength')
                     "
                   >
                     El nombre debe tener al menos 3 caracteres
                   </div>
                   <div
                     *ngIf="
-                      programaSocialForm.get('nombre')?.hasError('pattern')
+                      discapacidadForm.get('nombre')?.hasError('pattern')
                     "
                   >
                     El nombre no puede tener números ni caracteres especiales
@@ -209,7 +209,7 @@
           <button
             type="submit"
             class="btn btn-success"
-            [disabled]="!programaSocialForm.valid"
+            [disabled]="!discapacidadForm.valid"
           >
             {{ isModalAdd ? "Agregar" : "Actualizar" }}
           </button>

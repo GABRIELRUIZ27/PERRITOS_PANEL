@@ -1,32 +1,30 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoadingStates } from 'src/app/global/global';
-import { AreaAdscripcion } from 'src/app/models/area-adscripcion';
-import { ProgramaSocial } from 'src/app/models/programa-social';
+import { Discapacidad } from 'src/app/models/discapacidad';
 import { PaginationInstance } from 'ngx-pagination';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ProgramasSocialesService } from 'src/app/core/services/programas-sociales.service';
+import { DiscapacidadService } from 'src/app/core/services/discapacidad.service';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
 import * as XLSX from 'xlsx';
 
 @Component({
-  selector: 'app-programas-sociales',
-  templateUrl: './programas-sociales.component.html',
-  styleUrls: ['./programas-sociales.component.css']
+  selector: 'app-discapacidades',
+  templateUrl: './discapacidades.component.html',
+  styleUrls: ['./discapacidades.component.css']
 })
-export class ProgramasSocialesComponent {
+export class DiscapacidadesComponent {
 
   @ViewChild('closebutton') closebutton!: ElementRef;
   @ViewChild('searchItem') searchItem!: ElementRef;
 
-  programaSocial!: ProgramaSocial;
-  programaSocialForm!: FormGroup;
+  discapacidades!: Discapacidad;
+  discapacidadForm!: FormGroup;
   busqueda!: FormGroup;
-  programasSociales: ProgramaSocial[] = [];
-  programasSocialesFilter: ProgramaSocial[] = [];
+  discapacidad: Discapacidad[] = [];
+  discapacidadFilter: Discapacidad[] = [];
   isLoading = LoadingStates.neutro;
 
-  areasAdscripcion: AreaAdscripcion[] = [];
   isModalAdd: boolean = true;
   formData: any;
   rolId = 0;
@@ -39,18 +37,18 @@ export class ProgramasSocialesComponent {
   constructor(
     @Inject('CONFIG_PAGINATOR') public configPaginator: PaginationInstance,
     private spinnerService: NgxSpinnerService,
-    private programasSocialesService: ProgramasSocialesService,
+    private discapacidadService: DiscapacidadService,
     private mensajeService: MensajeService,
     private formBuilder: FormBuilder,
   ) {
-    this.programasSocialesService.refreshListProgramasSociales.subscribe(() => this.getProgramasSociales());
-    this.getProgramasSociales();
+    this.discapacidadService.refreshListDiscapacidades.subscribe(() => this.getDiscapacidad());
+    this.getDiscapacidad();
     this.creteForm();
   }
 
 
   creteForm() {
-    this.programaSocialForm = this.formBuilder.group({
+    this.discapacidadForm = this.formBuilder.group({
       id: [null],
       nombre: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^([a-zA-ZÀ-ÿ\u00C0-\u00FF]{2})[a-zA-ZÀ-ÿ\u00C0-\u00FF ]+$/)]],
     });
@@ -58,13 +56,13 @@ export class ProgramasSocialesComponent {
 
 
 
-  getProgramasSociales() {
+  getDiscapacidad() {
     this.isLoading = LoadingStates.trueLoading;
-    this.programasSocialesService.getAll().subscribe(
+    this.discapacidadService.getAll().subscribe(
       {
         next: (dataFromAPI) => {
-          this.programasSociales = dataFromAPI;
-          this.programasSocialesFilter = this.programasSociales;
+          this.discapacidad = dataFromAPI;
+          this.discapacidadFilter = this.discapacidad;
           this.isLoading = LoadingStates.falseLoading;
         },
         error: () => {
@@ -78,22 +76,23 @@ export class ProgramasSocialesComponent {
   onPageChange(number: number) {
     this.configPaginator.currentPage = number;
   }
+
   handleChangeSearch(event: any) {
     const inputValue = event.target.value;
     const valueSearch = inputValue.toLowerCase();
-    this.programasSocialesFilter = this.programasSociales.filter(programa =>
-      programa.nombre.toLowerCase().includes(valueSearch) ||
-      programa.id.toString().includes(valueSearch)
+    this.discapacidadFilter = this.discapacidad.filter(discapacidad =>
+      discapacidad.nombre.toLowerCase().includes(valueSearch) ||
+      discapacidad.id.toString().includes(valueSearch)
     );
     this.configPaginator.currentPage = 1;
   }
 
 
   actualizar() {
-    const programaSocialData = { ...this.programaSocialForm.value };
-    this.programaSocial = programaSocialData as ProgramaSocial;
+    const programaSocialData = { ...this.discapacidadForm.value };
+    this.discapacidades = programaSocialData as Discapacidad;
     this.spinnerService.show();
-    this.programasSocialesService.put(this.id, this.programaSocial).subscribe({
+    this.discapacidadService.put(this.id, this.discapacidades).subscribe({
       next: () => {
         this.spinnerService.hide();
         this.mensajeService.mensajeExito("Programa social actualizado con éxito");
@@ -108,22 +107,23 @@ export class ProgramasSocialesComponent {
   }
 
 
-  setDataModalUpdate(dto: ProgramaSocial) {
+  setDataModalUpdate(dto: Discapacidad) {
     this.isModalAdd = false;
     this.id = dto.id;
-    this.programaSocialForm.patchValue({
+    this.discapacidadForm.patchValue({
       id: dto.id,
       nombre: dto.nombre,
     });
-    this.formData = this.programaSocialForm.value;
+    this.formData = this.discapacidadForm.value;
     console.log(dto)
 
   }
+
   deleteItem(id: number, nameItem: string) {
     this.mensajeService.mensajeAdvertencia(
       `¿Estás seguro de eliminar el programa social: ${nameItem}?`,
       () => {
-        this.programasSocialesService.delete(id).subscribe({
+        this.discapacidadService.delete(id).subscribe({
           next: () => {
             this.mensajeService.mensajeExito('Programa social borrado correctamente');
             this.configPaginator.currentPage = 1;
@@ -138,8 +138,9 @@ export class ProgramasSocialesComponent {
 
   resetForm() {
     this.closebutton.nativeElement.click();
-    this.programaSocialForm.reset();
+    this.discapacidadForm.reset();
   }
+
   submit() {
     if (this.isModalAdd === false) {
 
@@ -152,11 +153,11 @@ export class ProgramasSocialesComponent {
 
 
   agregar() {
-    const programaSocialData = { ...this.programaSocialForm.value };
+    const programaSocialData = { ...this.discapacidadForm.value };
     delete programaSocialData.id;
-    this.programaSocial = programaSocialData as ProgramaSocial;
+    this.discapacidades = programaSocialData as Discapacidad;
     this.spinnerService.show();
-    this.programasSocialesService.post(this.programaSocial).subscribe({
+    this.discapacidadService.post(this.discapacidades).subscribe({
       next: () => {
         this.spinnerService.hide();
         this.mensajeService.mensajeExito('Programa social guardado correctamente');
@@ -171,9 +172,9 @@ export class ProgramasSocialesComponent {
   }
 
   handleChangeAdd() {
-    if (this.programaSocialForm) {
-      this.programaSocialForm.reset();
-      const estatusControl = this.programaSocialForm.get('estatus');
+    if (this.discapacidadForm) {
+      this.discapacidadForm.reset();
+      const estatusControl = this.discapacidadForm.get('estatus');
       if (estatusControl) {
         estatusControl.setValue(true);
       }
@@ -185,17 +186,18 @@ export class ProgramasSocialesComponent {
   setEstatus() {
     this.estatusTag = this.estatusBtn ? this.verdadero : this.falso;
   }
+
   exportarDatosAExcel() {
-    if (this.programasSociales.length === 0) {
+    if (this.discapacidad.length === 0) {
       console.warn('La lista de usuarios está vacía. No se puede exportar.');
       return;
     }
 
-    const datosParaExportar = this.programasSociales.map(programasSociales => {
+    const datosParaExportar = this.discapacidad.map(discapacidades => {
 
       return {
-        'Id': programasSociales.id,
-        'Nombre': programasSociales.nombre,
+        'Id': discapacidades.id,
+        'Nombre': discapacidades.nombre,
       };
     });
 
@@ -217,7 +219,7 @@ export class ProgramasSocialesComponent {
   }
 
   toggleEstatus() {
-    const estatusControl = this.programaSocialForm.get('Estatus');
+    const estatusControl = this.discapacidadForm.get('Estatus');
 
     if (estatusControl) {
       estatusControl.setValue(estatusControl.value === 1 ? 0 : 1);
@@ -228,8 +230,8 @@ export class ProgramasSocialesComponent {
   beneficiarioFiltrado: any[] = [];
 
   filtrarBeneficiario(): any {
-    return this.programasSociales.filter(programasSociales =>
-      programasSociales.nombre.toLowerCase().includes(this.buscar.toLowerCase(),)
+    return this.discapacidad.filter(discapacidades =>
+      discapacidades.nombre.toLowerCase().includes(this.buscar.toLowerCase(),)
     );
 
   }

@@ -2,50 +2,49 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HandleErrorService } from './handle-error.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Visita } from 'src/app/models/visita';
-import { GeneralWordCloud, WordCloud } from 'src/app/models/word-cloud';
+import { Discapacidad } from 'src/app/models/discapacidad';
 
 @Injectable({
   providedIn: 'root'
 })
-export class VisitasService {
-  route = `${environment.apiUrl}/visitas`;
-  private _refreshListVisitas$ = new Subject<Visita | null>();
+export class DiscapacidadService {
+  route = `${environment.apiUrl}/discapacidad`;
+  private _refreshListDiscapacidades$ = new Subject<Discapacidad | null>();
 
   constructor(
     private http: HttpClient,
     private handleErrorService: HandleErrorService
-  ) { } 
+  ) { }
 
-  get refreshListVisitas() {
-    return this._refreshListVisitas$;
+  get refreshListDiscapacidades() {
+    return this._refreshListDiscapacidades$;
   }
 
   getById(id: number) {
-    return this.http.get<Visita>(`${this.route}/obtener-por-id/${id}`);
+    return this.http.get<Discapacidad>(`${this.route}/obtener-por-id/${id}`);
   }
 
   getAll() {
-    return this.http.get<Visita[]>(`${this.route}/obtener-todos`);
+    return this.http.get<Discapacidad[]>(`${this.route}/obtener-todos`);
   }
 
-  post(dto: Visita) {
-    return this.http.post<Visita>(`${this.route}/crear`, dto)
+  post(dto: Discapacidad) {
+    return this.http.post<Discapacidad>(`${this.route}/crear`, dto)
       .pipe(
         tap(() => {
-          this._refreshListVisitas$.next(null);
+          this._refreshListDiscapacidades$.next(null);
         }),
         catchError(this.handleErrorService.handleError)
       );
   }
 
-  put(id: number, dto: Visita) {
-    return this.http.put<Visita>(`${this.route}/actualizar/${id}`, dto)
+  put(id: number, dto: Discapacidad) {
+    return this.http.put<Discapacidad>(`${this.route}/actualizar/${id}`, dto)
       .pipe(
         tap(() => {
-          this._refreshListVisitas$.next(null);
+          this._refreshListDiscapacidades$.next(null);
         }),
         catchError(this.handleErrorService.handleError)
       );
@@ -55,10 +54,9 @@ export class VisitasService {
     return this.http.delete(`${this.route}/eliminar/${id}`)
       .pipe(
         tap(() => {
-          this._refreshListVisitas$.next(null);
+          this._refreshListDiscapacidades$.next(null);
         }),
         catchError(this.handleErrorService.handleError)
       );
-  }  
-
+  }
 }

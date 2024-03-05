@@ -23,11 +23,6 @@ export class NavbarComponent {
   }
 
   logout() {
-    if (this.dataObject && this.dataObject.usuarioId) {
-      this.securityService.logout(this.dataObject.usuarioId).subscribe(() => {
-        this.router.navigateByUrl('');
-      });
-    } else {
-    }
+    this.router.navigateByUrl('/login');
   }
 }

@@ -1,4 +1,4 @@
-export interface ProgramaSocial {
+export interface Discapacidad {
     id: number;
     nombre: string;
 }

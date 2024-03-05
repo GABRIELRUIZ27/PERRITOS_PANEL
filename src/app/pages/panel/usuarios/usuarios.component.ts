@@ -2,14 +2,10 @@ import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaginationInstance } from 'ngx-pagination';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { CandidatosService } from 'src/app/core/services/candidatos.service';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
-import { OperadoresService } from 'src/app/core/services/operadores.service';
 import { RolsService } from 'src/app/core/services/rols.service';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
 import { LoadingStates } from 'src/app/global/global';
-import { Candidato } from 'src/app/models/candidato';
-import { Operador } from 'src/app/models/operador';
 import { Rol } from 'src/app/models/rol';
 import { Usuario } from 'src/app/models/usuario';
 import * as XLSX from 'xlsx';
@@ -30,8 +26,6 @@ export class UsuariosComponent {
   usuariosFilter: Usuario[] = [];
   isLoading = LoadingStates.neutro;
   rols: Rol[] = [];
-  candidatos: Candidato[] = [];
-  operadores: Operador[] = [];
   isModalAdd = true;
 
   constructor(
@@ -40,17 +34,12 @@ export class UsuariosComponent {
     private usuarioService: UsuariosService,
     private mensajeService: MensajeService,
     private formBuilder: FormBuilder,
-    private candidatosService: CandidatosService,
     private rolsService: RolsService,
-    private operadoresService: OperadoresService,
   ) {
     this.usuarioService.refreshListUsuarios.subscribe(() => this.getUsuarios());
     this.getUsuarios();
     this.getRols();
-    this.getCandidatos();
     this.creteForm();
-    this.getOperadores();
-    this.subscribeRolId();
     this.isModalAdd = false;
   }
 
@@ -58,20 +47,10 @@ export class UsuariosComponent {
     this.rolsService.getAll().subscribe({ next: (dataFromAPI) => this.rols = dataFromAPI });
   }
 
-  getCandidatos() {
-    this.candidatosService.getAll().subscribe({ next: (dataFromAPI) => this.candidatos = dataFromAPI });
-  }
-
-  getOperadores() {
-    this.operadoresService.getAll().subscribe({ next: (dataFromAPI) => this.operadores = dataFromAPI });
-  }
-
   creteForm() {
     this.usuarioForm = this.formBuilder.group({
       id: [null],
-      nombre: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^([a-zA-ZÀ-ÿ\u00C0-\u00FF]{2})[a-zA-ZÀ-ÿ\u00C0-\u00FF ]+$/)]],
-      apellidoPaterno: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^([a-zA-ZÀ-ÿ\u00C0-\u00FF]{2})[a-zA-ZÀ-ÿ\u00C0-\u00FF ]+$/)]],
-      apellidoMaterno: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^([a-zA-ZÀ-ÿ\u00C0-\u00FF]{2})[a-zA-ZÀ-ÿ\u00C0-\u00FF ]+$/)]],
+      nombreCompleto: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^([a-zA-ZÀ-ÿ\u00C0-\u00FF]{2})[a-zA-ZÀ-ÿ\u00C0-\u00FF ]+$/)]],
       correo: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$')]],
       password: [
         '',
@@ -81,42 +60,7 @@ export class UsuariosComponent {
         ],
       ],
       estatus: [true],
-      rolId: [null, Validators.required],
-      operadorId: [null],
-      candidatoId: [null],
-    });
-  }
-
-
-  changeValidatorsCandidato(rolId: number) {
-    //Si es candidato
-    if (rolId === 3) {
-      this.usuarioForm.controls["candidatoId"].enable();
-      this.usuarioForm.controls["candidatoId"].setValidators(Validators.required);
-    } else {
-      this.usuarioForm.controls["candidatoId"].disable();
-      this.usuarioForm.controls["candidatoId"].clearValidators();
-    }
-    this.usuarioForm.get("candidatoId")?.updateValueAndValidity();
-  }
-
-  changeValidatorsOperador(rolId: number) {
-    //Si es operador
-    if (rolId === 2) {
-      this.usuarioForm.controls["operadorId"].enable();
-      this.usuarioForm.controls["operadorId"].setValidators(Validators.required);
-    } else {
-      this.usuarioForm.controls["operadorId"].disable();
-      this.usuarioForm.controls["operadorId"].clearValidators();
-    }
-    this.usuarioForm.get("operadorId")?.updateValueAndValidity();
-  }
-
-  subscribeRolId() {
-    this.usuarioForm.get("rolId")?.valueChanges.subscribe(eventRolId => {
-      this.usuarioForm.patchValue({ candidatoId: null, operadorId: null });
-      this.changeValidatorsCandidato(eventRolId);
-      this.changeValidatorsOperador(eventRolId);
+      rolId: [1],
     });
   }
 
@@ -145,9 +89,7 @@ export class UsuariosComponent {
     const valueSearch = inputValue.toLowerCase();
 
     this.usuariosFilter = this.usuarios.filter(usuario =>
-      usuario.nombre.toLowerCase().includes(valueSearch) ||
-      usuario.apellidoPaterno.toLowerCase().includes(valueSearch) ||
-      usuario.apellidoMaterno.toLowerCase().includes(valueSearch) ||
+      usuario.nombreCompleto.toLowerCase().includes(valueSearch) ||
       usuario.rol.nombreRol.toLowerCase().includes(valueSearch) ||
       usuario.correo.toLowerCase().includes(valueSearch)
     );
@@ -162,15 +104,11 @@ export class UsuariosComponent {
     this.idUpdate = dto.id;
     this.usuarioForm.patchValue({
       id: dto.id,
-      nombre: dto.nombre,
-      apellidoPaterno: dto.apellidoPaterno,
-      apellidoMaterno: dto.apellidoMaterno,
+      nombre: dto.nombreCompleto,
       correo: dto.correo,
       password: dto.password,
       estatus: dto.estatus,
       rolId: dto.rol.id,
-      candidatoId: dto.candidato?.id,
-      operadorId: dto.operador?.id
     });
   }
 
@@ -178,11 +116,7 @@ export class UsuariosComponent {
     this.usuario = this.usuarioForm.value as Usuario;
 
     const rolId = this.usuarioForm.get('rolId')?.value;
-    const candidatoId = this.usuarioForm.get('candidatoId')?.value;
-    const operadorId = this.usuarioForm.get('operadorId')?.value;
 
-    this.usuario.operador = { id: operadorId } as Operador;
-    this.usuario.candidato = { id: candidatoId } as Candidato;
     this.usuario.rol = { id: rolId } as Rol;
 
     this.spinnerService.show();
@@ -215,16 +149,11 @@ export class UsuariosComponent {
     );
   }
 
-
   agregar() {
     this.usuario = this.usuarioForm.value as Usuario;
-    const rolId = this.usuarioForm.get('rolId')?.value;
-    const candidatoId = this.usuarioForm.get('candidatoId')?.value;
-    const operadorId = this.usuarioForm.get('operadorId')?.value;
-
-    this.usuario.operador = { id: operadorId } as Operador;
-    this.usuario.candidato = { id: candidatoId } as Candidato;
-    this.usuario.rol = { id: rolId } as Rol;
+    const rolId = 1; // Estableces el valor predeterminado de rolId
+  
+    this.usuario.rol = { id: rolId, nombreRol: 'Administrador' }; // Aquí estableces el objeto rol con su id y nombre
     this.spinnerService.show();
     this.usuarioService.post(this.usuario).subscribe({
       next: () => {
@@ -238,10 +167,10 @@ export class UsuariosComponent {
         this.mensajeService.mensajeError(error);
       },
     });
-
+  
   }
-
-
+  
+  
   resetForm() {
     this.closebutton.nativeElement.click();
     this.usuarioForm.reset();
@@ -277,9 +206,7 @@ export class UsuariosComponent {
     const datosParaExportar = this.usuarios.map(usuario => {
       const estatus = usuario.estatus ? 'Activo' : 'Inactivo';
       return {
-        'Nombre': usuario.nombre,
-        'Apellido Paterno': usuario.apellidoPaterno,
-        'Apellido Materno': usuario.apellidoMaterno,
+        'Nombre': usuario.nombreCompleto,
         'Correo': usuario.correo,
         'Rol': usuario.rol.nombreRol,
         'Estatus': estatus,

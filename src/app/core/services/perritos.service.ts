@@ -2,49 +2,49 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HandleErrorService } from './handle-error.service';
-import { catchError, tap } from 'rxjs/operators';
-import { Voto } from 'src/app/models/voto';
 import { Subject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { Perritos } from 'src/app/models/perritos';
 
 @Injectable({
   providedIn: 'root'
 })
-export class VotoService {
-  route = `${environment.apiUrl}/voto`;
-  private _refreshListVotos$ = new Subject<Voto | null>();
+export class PerritosService {
+  route = `${environment.apiUrl}/perritos`;
+  private _refreshListPerritos$ = new Subject<Perritos | null>();
 
   constructor(
     private http: HttpClient,
     private handleErrorService: HandleErrorService
   ) { }
 
-  get refreshListVotos() {
-    return this._refreshListVotos$;
+  get refreshListPerritos() {
+    return this._refreshListPerritos$;
   }
 
   getById(id: number) {
-    return this.http.get<Voto>(`${this.route}/obtener-por-id/${id}`);
+    return this.http.get<Perritos>(`${this.route}/obtener-por-id/${id}`);
   }
 
   getAll() {
-    return this.http.get<Voto[]>(`${this.route}/obtener-todos`);
+    return this.http.get<Perritos[]>(`${this.route}/obtener-todos`);
   }
 
-  post(dto: Voto) {
-    return this.http.post<Voto>(`${this.route}/crear`, dto)
+  post(dto: Perritos) {
+    return this.http.post<Perritos>(`${this.route}/crear`, dto)
       .pipe(
         tap(() => {
-          this._refreshListVotos$.next(null);
+          this._refreshListPerritos$.next(null);
         }),
         catchError(this.handleErrorService.handleError)
       );
   }
 
-  put(id: number, dto: Voto) {
-    return this.http.put<Voto>(`${this.route}/actualizar/${id}`, dto)
+  put(id: number, dto: Perritos) {
+    return this.http.put<Perritos>(`${this.route}/actualizar/${id}`, dto)
       .pipe(
         tap(() => {
-          this._refreshListVotos$.next(null);
+          this._refreshListPerritos$.next(null);
         }),
         catchError(this.handleErrorService.handleError)
       );
@@ -54,10 +54,9 @@ export class VotoService {
     return this.http.delete(`${this.route}/eliminar/${id}`)
       .pipe(
         tap(() => {
-          this._refreshListVotos$.next(null);
+          this._refreshListPerritos$.next(null);
         }),
         catchError(this.handleErrorService.handleError)
       );
   }
-
 }
