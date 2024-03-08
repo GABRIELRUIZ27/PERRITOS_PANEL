@@ -61,15 +61,15 @@
           <table class="table table-vcenter card-table table-striped">
             <thead>
               <tr>
-                <th class="text-center">#</th>
+                <th class="text-center">#</th>                
+                <th style="text-transform: none; font-size: inherit">
+                  Imágen
+                </th>
                 <th style="text-transform: none; font-size: inherit">
                   Perrito
                 </th>
                 <th style="text-transform: none; font-size: inherit">
-                  Género
-                </th>
-                <th style="text-transform: none; font-size: inherit">
-                  Imágen
+                  Fecha adopción
                 </th>
                 <th style="text-transform: none; font-size: inherit">
                   Acciones
@@ -92,22 +92,22 @@
                   }}
                 </td>
                 <td class="text-muted">
+                    <div class="flex justify-center items-center">
+                      <img
+                        src="{{ perrito.imagen }}"
+                        alt="Foto de {{ perrito.imagen }}"
+                        width="50"
+                        height="50"
+                        (click)="mostrarImagenAmpliada(perrito.imagen)"
+                      />
+                    </div>
+                  </td>
+                  <td class="text-muted">
+                      {{ perrito.perrito.nombre }}
+                    </td>
+                <td class="text-muted">
                   {{ perrito.fechaAdopcion }}
                 </td>
-                <td class="text-muted">
-                  <div class="flex justify-center items-center">
-                    <img
-                      src="{{ perrito.imagen }}"
-                      alt="Foto de {{ perrito.imagen }}"
-                      width="50"
-                      height="50"
-                      (click)="mostrarImagenAmpliada(perrito.imagen)"
-                    />
-                  </div>
-                </td>
-                <td class="text-muted">
-                    {{ perrito.perritos.nombre }}
-                  </td>
                 <td style="width: 50px">
                   <div>
                     <button
@@ -167,7 +167,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-          {{ isModalAdd ? "Agregar" : "Actualizar" }} perrito
+          {{ isModalAdd ? "Agregar" : "Actualizar" }} adopción
         </h5>
         <button
           #closebutton
@@ -183,10 +183,10 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="mb-3">
-                <label class="form-label">Discapacidad*:</label>
+                <label class="form-label">Perrito*:</label>
                 <ng-select
                   formControlName="perritos"
-                  #selectDiscapacidad
+                  #selectPerritos
                   [searchable]="false"
                   [items]="perritos"
                   bindLabel="nombre"
@@ -199,7 +199,7 @@
                       class="form-control"
                       type="text"
                       (input)="
-                        selectDiscapacidad.filter($any($event.target).value)
+                        selectPerritos.filter($any($event.target).value)
                       "
                     />
                   </ng-template>

@@ -10,7 +10,7 @@ import { Adopciones } from 'src/app/models/adopcion';
   providedIn: 'root'
 })
 export class AdopcionService {
-  route = `${environment.apiUrl}/perritos`;
+  route = `${environment.apiUrl}/adoptados`;
   private _refreshListAdopciones$ = new Subject<Adopciones | null>();
 
   constructor(

@@ -86,7 +86,7 @@ export class AdopcionComponent {
         ],
       ],
       imagenBase64: [''],
-      perrito: [null, Validators.required],
+      perritos: [null, Validators.required],
     });
   }
 
@@ -100,7 +100,7 @@ export class AdopcionComponent {
     const inputValue = event.target.value.toLowerCase();
     this.adopcionFilter = this.adopciones.filter(
       (perrito) =>
-        perrito.perritos.nombre
+        perrito.perrito.nombre
           .toLocaleLowerCase()
           .includes(inputValue.toLowerCase()) ||
         perrito.fechaAdopcion
@@ -132,7 +132,7 @@ export class AdopcionComponent {
 
     this.adopcionForm.patchValue({
       id: dto.id,
-      perrito: dto.perritos.id,
+      perrito: dto.perrito.id,
       fechaAdopcion: dto.fechaAdopcion,
       imagenBase64: '',
     });
@@ -175,9 +175,9 @@ export class AdopcionComponent {
 
   agregar() {
     this.adopcion = this.adopcionForm.value as Adopciones;
-    const perritoId = this.adopcionForm.get('perrito')?.value;
+    const perritoId = this.adopcionForm.get('perritos')?.value;
 
-    this.adopcion.perritos = { id: perritoId } as Perritos;
+    this.adopcion.perrito = { id: perritoId } as Perritos;
 
     this.spinnerService.show();
     console.log('data:', this.adopcion);
@@ -209,7 +209,7 @@ export class AdopcionComponent {
 
     this.imgPreview = '';
 
-    this.adopcion.perritos = { id: perritoId } as Perritos;
+    this.adopcion.perrito = { id: perritoId } as Perritos;
 
     if (!imagenBase64) {
       const formData = { ...this.adopcion };
