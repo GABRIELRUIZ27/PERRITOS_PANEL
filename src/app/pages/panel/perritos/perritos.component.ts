@@ -12,8 +12,10 @@ import * as XLSX from 'xlsx';
 import { PerritosService } from 'src/app/core/services/perritos.service';
 import { Genero } from 'src/app/models/genero';
 import { GeneroService } from 'src/app/core/services/generos.service';
-
-
+import { Edad } from 'src/app/models/edad';
+import { EdadService } from 'src/app/core/services/edad.service';
+import { Tamaño } from 'src/app/models/tamaño';
+import { TamañoService } from 'src/app/core/services/tamaño.service';
 @Component({
   selector: 'app-perritos',
   templateUrl: './perritos.component.html',
@@ -31,6 +33,8 @@ export class PerritosComponent {
   isLoading = LoadingStates.neutro;
   genero: Genero[] = [];
   discapacidad: Discapacidad[] = [];
+  tamano: Tamaño [] = [];
+  edad: Edad [] = [];
   isModalAdd = true;
   imagenAmpliada: string | null = null;
   mostrarModal = false;
@@ -46,12 +50,18 @@ export class PerritosComponent {
     private mensajeService: MensajeService,
     private formBuilder: FormBuilder,
     private discapacidadService: DiscapacidadService,
+    private tamañoService: TamañoService,
+    private edadService: EdadService,
+
   ) {
     this.createForm();
     this.perritosService.refreshListPerritos.subscribe(() => this.getPerritos());
     this.getPerritos();
     this.getDiscapacidades();
     this.getGenero();
+    this.getEdad();
+    this.getTamaño();
+
   }
 
   getGenero() {
@@ -59,6 +69,30 @@ export class PerritosComponent {
       next: (dataFromAPI) => {
         this.genero = dataFromAPI;
         console.log('Género', this.genero);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  getTamaño() {
+    this.tamañoService.getAll().subscribe({
+      next: (dataFromAPI) => {
+        this.tamano = dataFromAPI;
+        console.log('Tamaño', this.tamano);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  getEdad() {
+    this.edadService.getAll().subscribe({
+      next: (dataFromAPI) => {
+        this.edad = dataFromAPI;
+        console.log('Edad', this.edad);
       },
       error: (error) => {
         console.error(error);
@@ -105,16 +139,12 @@ export class PerritosComponent {
           ),
         ],
       ],
-      edad: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],
       imagenBase64: [''],
       genero: [null, Validators.required],
+      edad: [null, Validators.required],
       discapacidad: [null],
       esterilizado: [true],
+      tamano: [null, Validators.required],
     });
   }
 
@@ -171,6 +201,8 @@ export class PerritosComponent {
       esterilizado: dto.esterelizado,
       discapacidad: dto.discapacidad.id,
       imagenBase64: '',
+      tamano: dto.tamaño.id,
+      edad: dto.edad.id
     });
 
     // El objeto que se enviará al editar la visita será directamente this.visitaForm.value
@@ -184,7 +216,7 @@ export class PerritosComponent {
       () => {
         this.perritosService.delete(id).subscribe({
           next: () => {
-            this.mensajeService.mensajeExito('Perrito borrada correctamente');
+            this.mensajeService.mensajeExito('Perrito borrado correctamente');
             this.configPaginator.currentPage = 1;
             this.searchItem.nativeElement.value = '';
           },
@@ -213,9 +245,13 @@ export class PerritosComponent {
     this.perrito = this.perritoForm.value as Perritos;
     const discapacidadId = this.perritoForm.get('discapacidad')?.value;
     const generoId = this.perritoForm.get('genero')?.value;
+    const tamañoId = this.perritoForm.get('tamano')?.value;
+    const edadId = this.perritoForm.get('edad')?.value;
 
     this.perrito.discapacidad = { id: discapacidadId } as Discapacidad;
     this.perrito.genero = { id: generoId } as Genero;
+    this.perrito.tamaño = { id: tamañoId } as Tamaño;
+    this.perrito.edad = { id: edadId } as Edad;
 
     this.spinnerService.show();
     console.log('data:', this.perrito);
@@ -257,7 +293,7 @@ export class PerritosComponent {
       this.perritosService.put(visitaId, formData).subscribe({
         next: () => {
           this.spinnerService.hide();
-          this.mensajeService.mensajeExito('Visita actualizada correctamente');
+          this.mensajeService.mensajeExito('Perrito actualizada correctamente');
           this.resetForm();
           this.configPaginator.currentPage = 1;
         },
@@ -273,7 +309,7 @@ export class PerritosComponent {
       this.perritosService.put(visitaId, formData).subscribe({
         next: () => {
           this.spinnerService.hide();
-          this.mensajeService.mensajeExito('Visita actualizada correctamente');
+          this.mensajeService.mensajeExito('Perrito actualizado correctamente');
           this.resetForm();
           this.configPaginator.currentPage = 1;
         },

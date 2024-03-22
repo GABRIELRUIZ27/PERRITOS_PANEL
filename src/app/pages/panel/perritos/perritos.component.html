@@ -276,28 +276,65 @@
                 </div>
               </div>
         </div>
-
-            <div class="row">
-            <div class="col-lg-8">
-                <div class="mb-3">
-                  <label class="form-label">Edad*:</label>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label class="form-label">Edad*:</label>
+              <ng-select
+                formControlName="edad"
+                #selectEdad
+                [searchable]="false"
+                [items]="edad"
+                bindLabel="nombre"
+                bindValue="id"
+                placeholder="Elegir"
+                [clearable]="false"
+              >
+                <ng-template ng-header-tmp>
                   <input
-                      type="text"
+                    class="form-control"
+                    type="text"
+                    (input)="
+                      selectEdad.filter($any($event.target).value)
+                    "
+                  />
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                  {{ item.nombre }}
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-lg-6">
+              <div class="mb-3">
+                <label class="form-label">Tamaño*:</label>
+                <ng-select
+                  formControlName="tamano"
+                  #selectTamano
+                  [searchable]="false"
+                  [items]="tamano"
+                  bindLabel="nombre"
+                  bindValue="id"
+                  placeholder="Elegir"
+                  [clearable]="false"
+                >
+                  <ng-template ng-header-tmp>
+                    <input
                       class="form-control"
-                      formControlName="edad"
+                      type="text"
+                      (input)="
+                        selectTamano.filter($any($event.target).value)
+                      "
                     />
-                  <div
-                    *ngIf="perritoForm.get('edad')?.touched"
-                    class="error-message"
-                  >
-                    <div
-                      *ngIf="perritoForm.get('edad')?.hasError('required')"
-                    >
-                      La descripción es obligatoria
-                    </div>
-                  </div>
-                </div>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{ item.nombre }}
+                  </ng-template>
+                </ng-select>
               </div>
+            </div>
+      </div>
+            <div class="row">
               <div class="col-lg-4">
                 <div class="mb-3 custom-green-switch">
                   <label for="estadoActivo" class="form-label">Esterilizado</label>
