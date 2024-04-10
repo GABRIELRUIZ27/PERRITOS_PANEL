@@ -55,6 +55,7 @@ export class PerritosComponent {
 
   ) {
     this.createForm();
+    this.perritoForm.patchValue({ esterilizado: true });
     this.perritosService.refreshListPerritos.subscribe(() => this.getPerritos());
     this.getPerritos();
     this.getDiscapacidades();
@@ -183,32 +184,37 @@ export class PerritosComponent {
   formData: any;
 
   setDataModalUpdate(dto: Perritos) {
-    this.isModalAdd = false;
-    this.id = dto.id;
-
-    const perrito = this.perritosFilter.find(
-      (perrito) => perrito.id === dto.id
-    );
-
-    console.log('setModalUpdateDTO: ', dto);
-
-    this.imgPreview = perrito!.imagen;
-    this.isUpdatingImg = true;
-
-    this.perritoForm.patchValue({
-      id: dto.id,
-      nombre: dto.nombre,
-      esterilizado: dto.esterelizado,
-      discapacidad: dto.discapacidad.id,
-      imagenBase64: '',
-      tamano: dto.tamaño.id,
-      edad: dto.edad.id
-    });
-
-    // El objeto que se enviará al editar la visita será directamente this.visitaForm.value
-    console.log('setDataUpdateVistaForm ', this.perritoForm.value);
-    console.log('setDataUpdateDTO', dto);
-  }
+    if (dto !== null && dto !== undefined) { // Comprobación de null o undefined
+      this.isModalAdd = false;
+      this.id = dto.id;
+  
+      const perrito = this.perritosFilter.find(
+        (perrito) => perrito.id === dto.id
+      );
+  
+      console.log('setModalUpdateDTO: ', dto);
+  
+      this.imgPreview = perrito!.imagen;
+      this.isUpdatingImg = true;
+  
+      this.perritoForm.patchValue({
+        id: dto.id,
+        nombre: dto.nombre,
+        esterilizado: dto.esterelizado,
+        discapacidad: dto.discapacidad.id,
+        imagenBase64: '',
+        tamano: dto.tamaño.id,
+        edad: dto.edad.id,
+        genero: dto.genero.id
+      });
+  
+      // El objeto que se enviará al editar la visita será directamente this.visitaForm.value
+      console.log('setDataUpdateVistaForm ', this.perritoForm.value);
+      console.log('setDataUpdateDTO', dto);
+    } else {
+      console.error('El objeto dto es null o undefined');
+    }
+  }  
 
   deleteItem(id: number, nameItem: string) {
     this.mensajeService.mensajeAdvertencia(

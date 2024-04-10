@@ -105,9 +105,9 @@
                   <td class="text-muted">
                       {{ perrito.perrito.nombre }}
                     </td>
-                <td class="text-muted">
-                  {{ perrito.fechaAdopcion }}
-                </td>
+                    <td class="text-muted">
+                      {{ perrito.fechaAdopcion | date:'d' }} {{ obtenerNombreMes(perrito.fechaAdopcion | date:'M') }} {{ perrito.fechaAdopcion | date:'yyyy' }}
+                    </td>                                  
                 <td style="width: 50px">
                   <div>
                     <button
@@ -204,6 +204,12 @@
                     />
                   </ng-template>
                   <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <img
+                    src="{{ item.imagen }}"
+                    alt="Foto de {{ item.nombre }}"
+                    width="50"
+                    height="50"
+                  />
                     {{ item.nombre }}
                   </ng-template>
                 </ng-select>

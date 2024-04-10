@@ -10,7 +10,7 @@ import * as XLSX from 'xlsx';
 import { PerritosService } from 'src/app/core/services/perritos.service';
 import { Adopciones } from 'src/app/models/adopcion';
 import { AdopcionService } from 'src/app/core/services/adopcion.service';
-
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-perritos',
@@ -42,6 +42,7 @@ export class AdopcionComponent {
     private mensajeService: MensajeService,
     private formBuilder: FormBuilder,
     private adopcionService: AdopcionService,
+    private datePipe: DatePipe,
   ) {
     this.createForm();
     this.adopcionService.refreshListAdopciones.subscribe(() => this.getAdopciones());
@@ -49,7 +50,26 @@ export class AdopcionComponent {
     this.getAdopciones();
   }
 
-
+  obtenerNombreMes(fecha: string | null): string {
+    if (fecha === null) {
+      return '';
+    }
+    
+    const fechaObj = new Date(fecha);
+    const numeroMes = fechaObj.getMonth(); // El método getMonth() devuelve el número de mes (0-11)
+    
+    // Diccionario de nombres de meses en español
+    const nombresMeses = [
+      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    ];
+    
+    // Obtener el nombre del mes en base al número
+    const nombreMes = nombresMeses[numeroMes];
+    
+    return nombreMes || '';
+  }
+  
   getPerritos() {
     this.perritosService.getAll().subscribe({
       next: (dataFromAPI) => {

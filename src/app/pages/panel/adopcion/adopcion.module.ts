@@ -8,7 +8,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AdopcionComponent } from './adopcion.component';
-
+import { DatePipe } from '@angular/common';
+import { LOCALE_ID } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AdopcionComponent } from './adopcion.component';
     NgxSpinnerModule,
     NgxPaginationModule,
     NgSelectModule,
-  ]
+  ],
+  providers: [DatePipe],
 })
 export class AdopcionModule { }

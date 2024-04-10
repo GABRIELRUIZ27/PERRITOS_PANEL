@@ -200,18 +200,18 @@
                     La descripción es obligatoria
                   </div>
                   <div *ngIf="perritoForm.get('pattern')?.hasError('required')">
-                    La descripción no puede tener nùmeros ni caracteres
+                    El nombre no puede tener nùmeros ni caracteres
                     especiales
                   </div>
                   <div
                     *ngIf="perritoForm.get('nombre')?.hasError('minlength')"
                   >
-                    La descripción debe tener al menos 3 caracteres
+                  El nombre debe tener al menos 3 caracteres
                   </div>
                   <div
                     *ngIf="perritoForm.get('nombre')?.hasError('pattern')"
                   >
-                    La descripción no puede llevar números
+                    El nombre no puede llevar números
                   </div>
                 </div>
               </div>
@@ -219,35 +219,7 @@
             </div>
             
           <div class="row">
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Discapacidad*:</label>
-                <ng-select
-                  formControlName="discapacidad"
-                  #selectDiscapacidad
-                  [searchable]="false"
-                  [items]="discapacidad"
-                  bindLabel="nombre"
-                  bindValue="id"
-                  placeholder="Elegir"
-                  [clearable]="false"
-                >
-                  <ng-template ng-header-tmp>
-                    <input
-                      class="form-control"
-                      type="text"
-                      (input)="
-                        selectDiscapacidad.filter($any($event.target).value)
-                      "
-                    />
-                  </ng-template>
-                  <ng-template ng-option-tmp let-item="item" let-index="index">
-                    {{ item.nombre }}
-                  </ng-template>
-                </ng-select>
-              </div>
-            </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="mb-3">
                   <label class="form-label">Género*:</label>
                   <ng-select
@@ -275,9 +247,7 @@
                   </ng-select>
                 </div>
               </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-4">
             <div class="mb-3">
               <label class="form-label">Edad*:</label>
               <ng-select
@@ -305,7 +275,7 @@
               </ng-select>
             </div>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-4">
               <div class="mb-3">
                 <label class="form-label">Tamaño*:</label>
                 <ng-select
@@ -334,33 +304,38 @@
               </div>
             </div>
       </div>
+
             <div class="row">
-              <div class="col-lg-4">
-                <div class="mb-3 custom-green-switch">
-                  <label for="estadoActivo" class="form-label">Esterilizado</label>
-                  <label class="form-check form-switch checkbox-verde">
+            <div class="col-lg-12">
+              <div class="mb-3">
+                <label class="form-label">En caso de discapacidad seleccione una:</label>
+                <ng-select
+                  formControlName="discapacidad"
+                  #selectDiscapacidad
+                  [searchable]="false"
+                  [items]="discapacidad"
+                  bindLabel="nombre"
+                  bindValue="id"
+                  placeholder="Elegir"
+                  [clearable]="false"
+                >
+                  <ng-template ng-header-tmp>
                     <input
-                      class="form-check-input"
-                      type="checkbox"
-                      formControlName="esterilizado"
-                    />
-                    <span
-                      class="form-check-label"
-                      [ngClass]="
-                        perritoForm.get('esterilizado')?.value
-                          ? 'text-success'
-                          : 'text-danger'
+                      class="form-control"
+                      type="text"
+                      (input)="
+                        selectDiscapacidad.filter($any($event.target).value)
                       "
-                    >
-                      {{
-                        perritoForm.get("esterilizado")?.value ? "Si" : "No"
-                      }}
-                    </span>
-                  </label>
-                </div>
+                    />
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{ item.nombre }}
+                  </ng-template>
+                </ng-select>
               </div>
             </div>
-              
+          </div>
+
             <div class="col-lg-12">
               <div class="mb-3">
                 <div class="form-label">Selecciona una imagen:</div>
