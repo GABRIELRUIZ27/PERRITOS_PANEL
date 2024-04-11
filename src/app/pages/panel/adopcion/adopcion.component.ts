@@ -71,13 +71,19 @@ export class AdopcionComponent {
   }
   
   getPerritos() {
+    this.isLoading = LoadingStates.trueLoading;
     this.perritosService.getAll().subscribe({
       next: (dataFromAPI) => {
-        this.perritos = dataFromAPI;
-        console.log('Perritos', this.perritos);
+        this.perritos = dataFromAPI.filter(perrito => {
+          // Filtrar los perritos que no han sido adoptados
+          return !this.adopciones.some(adopcion => adopcion.perrito.id === perrito.id);
+        });
+        console.log('Perritos no adoptados:', this.perritos);
+        this.isLoading = LoadingStates.falseLoading;
       },
       error: (error) => {
         console.error(error);
+        this.isLoading = LoadingStates.errorLoading;
       },
     });
   }
@@ -87,14 +93,16 @@ export class AdopcionComponent {
     this.adopcionService.getAll().subscribe({
       next: (dataFromAPI) => {
         this.adopciones = dataFromAPI;
-        this.adopcionFilter = this.adopciones;
+        console.log('Adopciones:', this.adopciones);
+        this.adopcionFilter = this.adopciones; // Inicializa adopcionFilter con todos los datos al principio
         this.isLoading = LoadingStates.falseLoading;
+        this.getPerritos(); // Llamar a getPerritos después de obtener las adopciones
       },
       error: () => {
         this.isLoading = LoadingStates.errorLoading;
       },
     });
-  }
+  }  
 
   createForm() {
     this.adopcionForm = this.formBuilder.group({
