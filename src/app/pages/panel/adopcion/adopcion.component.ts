@@ -353,17 +353,30 @@ export class AdopcionComponent {
   }
 
   exportarDatosAExcel() {
-    if (this.perritos.length === 0) {
-      console.warn('La lista de visitas está vacía. No se puede exportar.');
+    if (this.adopciones.length === 0) {
+      console.warn('La lista de adopciones está vacía. No se puede exportar.');
       return;
     }
 
-    const datosParaExportar = this.perritos.map((perrito) => {
+    const datosParaExportar = this.adopciones.map((adopcion) => {
+      // Formatear la fecha para el campo 'Fecha de adopcion'
+      const fechaAdopcion = adopcion.fechaAdopcion ? new Date(adopcion.fechaAdopcion) : null; // Convertir a objeto Date si es una cadena válida
+      
+      const nombreMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+      let fechaFormateada = '';
+      
+      if (fechaAdopcion) {
+        const dia = fechaAdopcion.getDate();
+        const mes = fechaAdopcion.getMonth();
+        const año = fechaAdopcion.getFullYear();
+        fechaFormateada = `${dia} ${nombreMeses[mes]} ${año}`;
+      }
+      
       return {
-        'Nombre': perrito.nombre,
-        Discapacidad: perrito.discapacidad.nombre,
+        'Nombre': adopcion.perrito.nombre,
+        'Fecha de adopcion': fechaFormateada,
       };
-    });
+    });    
 
     const worksheet: XLSX.WorkSheet =
       XLSX.utils.json_to_sheet(datosParaExportar);
@@ -376,7 +389,7 @@ export class AdopcionComponent {
       type: 'array',
     });
 
-    this.guardarArchivoExcel(excelBuffer, 'visitas.xlsx');
+    this.guardarArchivoExcel(excelBuffer, 'adopciones.xlsx');
   }
 
   guardarArchivoExcel(buffer: any, nombreArchivo: string) {

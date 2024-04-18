@@ -29,7 +29,7 @@
                 #searchItem
                 type="text"
                 class="form-control form-control-rounded"
-                placeholder="Buscar"
+                placeholder="Buscar por nombre"
                 (input)="handleChangeSearch($event)"
               />
               <span class="input-icon-addon">
@@ -63,13 +63,13 @@
               <tr>
                 <th class="text-center">#</th>
                 <th style="text-transform: none; font-size: inherit">
-                  Perrito
+                  Imágen
+                </th>
+                <th style="text-transform: none; font-size: inherit">
+                  Nombre
                 </th>
                 <th style="text-transform: none; font-size: inherit">
                   Género
-                </th>
-                <th style="text-transform: none; font-size: inherit">
-                  Imágen
                 </th>
                 <th style="text-transform: none; font-size: inherit">
                   Acciones
@@ -92,12 +92,6 @@
                   }}
                 </td>
                 <td class="text-muted">
-                  {{ perrito.nombre }}
-                </td>
-                <td class="text-muted">
-                  {{ perrito.genero.nombre }}
-                </td>
-                <td class="text-muted">
                   <div class="flex justify-center items-center">
                     <img
                       src="{{ perrito.imagen }}"
@@ -107,6 +101,12 @@
                       (click)="mostrarImagenAmpliada(perrito.imagen)"
                     />
                   </div>
+                </td>
+                <td class="text-muted">
+                  {{ perrito.nombre }}
+                </td>
+                <td class="text-muted">
+                  {{ perrito.genero.nombre }}
                 </td>
                 <td style="width: 50px">
                   <div>

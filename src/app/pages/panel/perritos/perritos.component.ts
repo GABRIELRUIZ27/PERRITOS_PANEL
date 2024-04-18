@@ -161,13 +161,7 @@ export class PerritosComponent {
       (perrito) =>
         perrito.nombre
           .toLocaleLowerCase()
-          .includes(inputValue.toLowerCase()) ||
-        perrito.discapacidad.nombre
-          .toLocaleLowerCase()
-          .includes(inputValue.toLowerCase()) ||
-        perrito.genero.nombre
-          .toLocaleLowerCase()
-          .includes(inputValue.toLowerCase()) 
+          .includes(inputValue.toLowerCase())
     );
     this.configPaginator.currentPage = 1;
     if (this.perritoForm) {
@@ -382,14 +376,6 @@ export class PerritosComponent {
     });
   }
 
-  obtenerRutaImagen(nombreArchivo: string): string {
-    const rutaBaseAPI = 'https://localhost:7224/';
-    if (nombreArchivo) {
-      return `${rutaBaseAPI}images/${nombreArchivo}`;
-    }
-    return ''; // O una URL predeterminada si no hay nombre de archivo
-  }
-
   mostrarImagenAmpliada(rutaImagen: string) {
     this.imagenAmpliada = rutaImagen;
     const modal = document.getElementById('modal-imagen-ampliada');
@@ -410,13 +396,15 @@ export class PerritosComponent {
 
   exportarDatosAExcel() {
     if (this.perritos.length === 0) {
-      console.warn('La lista de visitas está vacía. No se puede exportar.');
+      console.warn('La lista de perritos está vacía. No se puede exportar.');
       return;
     }
 
     const datosParaExportar = this.perritos.map((perrito) => {
       return {
         'Nombre': perrito.nombre,
+        Género: perrito.genero.nombre,
+        Tamaño: perrito.tamaño.nombre,
         Discapacidad: perrito.discapacidad.nombre,
       };
     });
@@ -432,7 +420,7 @@ export class PerritosComponent {
       type: 'array',
     });
 
-    this.guardarArchivoExcel(excelBuffer, 'visitas.xlsx');
+    this.guardarArchivoExcel(excelBuffer, 'perritos.xlsx');
   }
 
   guardarArchivoExcel(buffer: any, nombreArchivo: string) {

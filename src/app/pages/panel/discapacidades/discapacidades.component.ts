@@ -95,12 +95,12 @@ export class DiscapacidadesComponent {
     this.discapacidadService.put(this.id, this.discapacidades).subscribe({
       next: () => {
         this.spinnerService.hide();
-        this.mensajeService.mensajeExito("Programa social actualizado con éxito");
+        this.mensajeService.mensajeExito("Discapacidad actualizada con éxito");
         this.resetForm();
         this.configPaginator.currentPage = 1;
       },
       error: (error) => {
-        this.mensajeService.mensajeError("Error al actualizar programa social");
+        this.mensajeService.mensajeError("Error al actualizar la discapacidad");
         console.error(error);
       }
     });
@@ -121,11 +121,11 @@ export class DiscapacidadesComponent {
 
   deleteItem(id: number, nameItem: string) {
     this.mensajeService.mensajeAdvertencia(
-      `¿Estás seguro de eliminar el programa social: ${nameItem}?`,
+      `¿Estás seguro de eliminar la discapacidad: ${nameItem}?`,
       () => {
         this.discapacidadService.delete(id).subscribe({
           next: () => {
-            this.mensajeService.mensajeExito('Programa social borrado correctamente');
+            this.mensajeService.mensajeExito('Discapacidad borrada correctamente');
             this.configPaginator.currentPage = 1;
             this.searchItem.nativeElement.value = '';
           },
@@ -189,7 +189,7 @@ export class DiscapacidadesComponent {
 
   exportarDatosAExcel() {
     if (this.discapacidad.length === 0) {
-      console.warn('La lista de usuarios está vacía. No se puede exportar.');
+      console.warn('La lista de discapacidades está vacía. No se puede exportar.');
       return;
     }
 
@@ -205,7 +205,7 @@ export class DiscapacidadesComponent {
     const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
-    this.guardarArchivoExcel(excelBuffer, 'Programas sociales.xlsx');
+    this.guardarArchivoExcel(excelBuffer, 'discapacidades.xlsx');
   }
 
   guardarArchivoExcel(buffer: any, nombreArchivo: string) {

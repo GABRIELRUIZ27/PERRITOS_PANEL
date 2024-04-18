@@ -1,82 +1,53 @@
 <div class="container-fluid">
-  <img src="assets/images/logo_app.png" alt="Logo de la aplicación" style="max-width: 80%;">
-
-  <div
-    class="collapse navbar-collapse"
-    id="sidebar-menu"
-    *ngIf="dataObject && dataObject.isAuthenticated"
-  >
-    <ul class="navbar-nav pt-lg-3">
-      <li
-        class="nav-item"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        *appHasClaim="'CanAccessInicio'"
-        style="margin-bottom: 10px"
-      >
-        <a class="nav-link" [routerLink]="['inicio']">
-          <span class="nav-link-icon d-md-none d-lg-inline-block">
-            <i class="ti ti-home-2" style="color: white"></i>
-          </span>
-          <span class="nav-link-title text-white"> Inicio </span>
-        </a>
-      </li>
-      <li
-        class="nav-item"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        *appHasClaim="'CanAccessUsuarios'"
-        style="margin-bottom: 10px"
-      >
-        <a class="nav-link" [routerLink]="['usuarios']">
-          <span class="nav-link-icon d-md-none d-lg-inline-block">
-            <i class="ti ti-users" style="color: white"></i>
-          </span>
-          <span class="nav-link-title">Usuarios</span>
-        </a>
-      </li>
-      <li
-        class="nav-item"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        *appHasClaim="'CanAccessPerritos'"
-        style="margin-bottom: 10px"
-      >
-        <a class="nav-link" [routerLink]="['perritos']">
-          <span class="nav-link-icon d-md-none d-lg-inline-block">
-            <i class="ti ti-dog" style="color: white"></i>
-          </span>
-          <span class="nav-link-title">Perritos</span>
-        </a>
-      </li>
-      <li
-        class="nav-item"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        *appHasClaim="'CanAccessDiscapacidades'"
-        style="margin-bottom: 10px"
-      >
-        <a class="nav-link" [routerLink]="['discapacidades']">
-          <span class="nav-link-icon d-md-none d-lg-inline-block">
-            <i class="ti ti-disabled-2" style="color: white"></i>
-          </span>
-          <span class="nav-link-title"> Cátalogo de discapacidades</span>
-        </a>
-      </li>
-      <li
-        class="nav-item"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        *appHasClaim="'CanAccessAdopciones'"
-        style="margin-bottom: 10px"
-      >
-        <a class="nav-link" [routerLink]="['adopciones']">
-          <span class="nav-link-icon d-md-none d-lg-inline-block">
-            <i class="ti ti-home-2" style="color: white"></i>
-          </span>
-          <span class="nav-link-title">Adopciones</span>
-        </a>
-      </li>
-    </ul>
-  </div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="sidebar-menu">
+        <ul class="navbar-nav pt-lg-3">
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessInicio'" style="margin-bottom: 10px">
+            <a class="nav-link" [routerLink]="['inicio']">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <i class="ti ti-home-2" style="color: white"></i>
+              </span>
+              <span class="nav-link-title text-white"> Inicio </span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessUsuarios'" style="margin-bottom: 10px">
+            <a class="nav-link" [routerLink]="['usuarios']">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <i class="ti ti-users" style="color: white"></i>
+              </span>
+              <span class="nav-link-title">Usuarios</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessPerritos'" style="margin-bottom: 10px">
+            <a class="nav-link" [routerLink]="['perritos']">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <i class="ti ti-dog" style="color: white"></i>
+              </span>
+              <span class="nav-link-title">Perritos</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessDiscapacidades'" style="margin-bottom: 10px">
+            <a class="nav-link" [routerLink]="['discapacidades']">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <i class="ti ti-disabled-2" style="color: white"></i>
+              </span>
+              <span class="nav-link-title"> Cátalogo de discapacidades</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessAdopciones'" style="margin-bottom: 10px">
+            <a class="nav-link" [routerLink]="['adopciones']">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <i class="ti ti-home-2" style="color: white"></i>
+              </span>
+              <span class="nav-link-title">Adopciones</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </div>
