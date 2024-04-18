@@ -277,23 +277,28 @@ export class PerritosComponent {
   actualizarVisita() {
     this.perrito = this.perritoForm.value as Perritos;
 
-    const visitaId = this.perritoForm.get('id')?.value;
-    const votanteId = this.perritoForm.get('simpatizante')?.value;
-    const imagenBase64 = this.perritoForm.get('imagenBase64')?.value;
+    const perritoId = this.perritoForm.get('id')?.value;
+    const discapacidadId = this.perritoForm.get('discapacidad')?.value;
+    const generoId = this.perritoForm.get('genero')?.value;
+    const tamañoId = this.perritoForm.get('tamano')?.value;
+    const edadId = this.perritoForm.get('edad')?.value;
+
+    this.perrito.discapacidad = { id: discapacidadId } as Discapacidad;
+    this.perrito.genero = { id: generoId } as Genero;
+    this.perrito.tamaño = { id: tamañoId } as Tamaño;
+    this.perrito.edad = { id: edadId } as Edad;    const imagenBase64 = this.perritoForm.get('imagenBase64')?.value;
 
     this.imgPreview = '';
-
-    this.perrito.discapacidad = { id: votanteId } as Discapacidad;
 
     if (!imagenBase64) {
       const formData = { ...this.perrito };
 
       this.spinnerService.show();
 
-      this.perritosService.put(visitaId, formData).subscribe({
+      this.perritosService.put(perritoId, formData).subscribe({
         next: () => {
           this.spinnerService.hide();
-          this.mensajeService.mensajeExito('Perrito actualizada correctamente');
+          this.mensajeService.mensajeExito('Perrito actualizado correctamente');
           this.resetForm();
           this.configPaginator.currentPage = 1;
         },
@@ -306,7 +311,7 @@ export class PerritosComponent {
       const formData = { ...this.perrito, imagenBase64 };
       this.spinnerService.show();
 
-      this.perritosService.put(visitaId, formData).subscribe({
+      this.perritosService.put(perritoId, formData).subscribe({
         next: () => {
           this.spinnerService.hide();
           this.mensajeService.mensajeExito('Perrito actualizado correctamente');

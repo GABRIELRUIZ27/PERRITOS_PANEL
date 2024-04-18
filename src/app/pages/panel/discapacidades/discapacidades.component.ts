@@ -160,7 +160,7 @@ export class DiscapacidadesComponent {
     this.discapacidadService.post(this.discapacidades).subscribe({
       next: () => {
         this.spinnerService.hide();
-        this.mensajeService.mensajeExito('Programa social guardado correctamente');
+        this.mensajeService.mensajeExito('Discapacidad guardada correctamente');
         this.resetForm();
         this.configPaginator.currentPage = 1;
       },
