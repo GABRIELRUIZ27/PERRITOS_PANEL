@@ -106,7 +106,7 @@
                       {{ perrito.perrito.nombre }}
                     </td>
                     <td class="text-muted">
-                      {{ perrito.fechaAdopcion | date:'d' }} {{ obtenerNombreMes(perrito.fechaAdopcion | date:'M') }} {{ perrito.fechaAdopcion | date:'yyyy' }}
+                      {{ perrito.fechaAdopcion | date:'dd/MM/yyyy' }} 
                     </td>                                  
                 <td style="width: 50px">
                   <div>
@@ -114,7 +114,7 @@
                       class="btn btn-warning btn-icon btn-sm"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-visita"
-                      (click)="setDataModalUpdate(adopcion)"
+                      (click)="setDataModalUpdate(perrito)"
                       style="margin-right: 5px"
                     >
                       <i class="ti ti-edit"></i>
@@ -181,9 +181,10 @@
       <form [formGroup]="adopcionForm" (ngSubmit)="submit()">
         <div class="modal-body">            
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12" *ngIf="isModalAdd">
               <div class="mb-3">
                 <label class="form-label">Perrito*:</label>
+                <!-- Select visible solo en modal de agregar -->
                 <ng-select
                   formControlName="perritos"
                   #selectPerritos
@@ -194,28 +195,34 @@
                   placeholder="Elegir"
                   [clearable]="false"
                 >
+                  <!-- Encabezado del select con barra de búsqueda -->
                   <ng-template ng-header-tmp>
                     <input
                       class="form-control"
                       type="text"
-                      (input)="
-                        selectPerritos.filter($any($event.target).value)
-                      "
+                      (input)="selectPerritos.filter($any($event.target).value)"
                     />
                   </ng-template>
+                  <!-- Opción del select con imagen y nombre del perrito -->
                   <ng-template ng-option-tmp let-item="item" let-index="index">
                     <img
-                    src="{{ item.imagen }}"
-                    alt="Foto de {{ item.nombre }}"
-                    width="50"
-                    height="50"
-                  />
+                      src="{{ item.imagen }}"
+                      alt="Foto de {{ item.nombre }}"
+                      width="50"
+                      height="50"
+                    />
                     {{ item.nombre }}
                   </ng-template>
                 </ng-select>
               </div>
             </div>
-        </div>
+            <div class="col-lg-12" *ngIf="!isModalAdd">
+              <!-- Mensaje de advertencia en modal de actualización -->
+              <div class="alert alert-warning" role="alert">
+                Para modificar el perrito, por favor elimine esta adopción y cree una nueva.
+              </div>
+            </div>
+          </div>
 
             <div class="row">
             <div class="col-lg-8">

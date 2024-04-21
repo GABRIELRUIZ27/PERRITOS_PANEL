@@ -5,5 +5,6 @@ export interface Adopciones {
     perrito: Perritos;
     imagen: string;
     imagenBase64: string;
+    strFechaAdopcion: string;
     fechaAdopcion: string;
 }

@@ -50,26 +50,6 @@ export class AdopcionComponent {
     this.getAdopciones();
   }
 
-  obtenerNombreMes(fecha: string | null): string {
-    if (fecha === null) {
-      return '';
-    }
-    
-    const fechaObj = new Date(fecha);
-    const numeroMes = fechaObj.getMonth(); // El método getMonth() devuelve el número de mes (0-11)
-    
-    // Diccionario de nombres de meses en español
-    const nombresMeses = [
-      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
-    ];
-    
-    // Obtener el nombre del mes en base al número
-    const nombreMes = nombresMeses[numeroMes];
-    
-    return nombreMes || '';
-  }
-  
   getPerritos() {
     this.isLoading = LoadingStates.trueLoading;
     this.perritosService.getAll().subscribe({
@@ -114,7 +94,7 @@ export class AdopcionComponent {
         ],
       ],
       imagenBase64: [''],
-      perritos: [null, Validators.required],
+      perritos: [null],
     });
   }
 
@@ -131,7 +111,7 @@ export class AdopcionComponent {
         perrito.perrito.nombre
           .toLocaleLowerCase()
           .includes(inputValue.toLowerCase()) ||
-        perrito.fechaAdopcion
+        perrito.strFechaAdopcion
           .toLocaleLowerCase()
           .includes(inputValue.toLowerCase()) 
     );
@@ -161,7 +141,7 @@ export class AdopcionComponent {
     this.adopcionForm.patchValue({
       id: dto.id,
       perrito: dto.perrito.id,
-      fechaAdopcion: dto.fechaAdopcion,
+      fechaAdopcion: dto.strFechaAdopcion,
       imagenBase64: '',
     });
 
@@ -247,7 +227,7 @@ export class AdopcionComponent {
       this.adopcionService.put(adopcionId, formData).subscribe({
         next: () => {
           this.spinnerService.hide();
-          this.mensajeService.mensajeExito('Visita actualizada correctamente');
+          this.mensajeService.mensajeExito('Adopción actualizada correctamente');
           this.resetForm();
           this.configPaginator.currentPage = 1;
         },
@@ -326,14 +306,6 @@ export class AdopcionComponent {
     });
   }
 
-  obtenerRutaImagen(nombreArchivo: string): string {
-    const rutaBaseAPI = 'https://localhost:7224/';
-    if (nombreArchivo) {
-      return `${rutaBaseAPI}images/${nombreArchivo}`;
-    }
-    return ''; // O una URL predeterminada si no hay nombre de archivo
-  }
-
   mostrarImagenAmpliada(rutaImagen: string) {
     this.imagenAmpliada = rutaImagen;
     const modal = document.getElementById('modal-imagen-ampliada');
@@ -359,22 +331,10 @@ export class AdopcionComponent {
     }
 
     const datosParaExportar = this.adopciones.map((adopcion) => {
-      // Formatear la fecha para el campo 'Fecha de adopcion'
-      const fechaAdopcion = adopcion.fechaAdopcion ? new Date(adopcion.fechaAdopcion) : null; // Convertir a objeto Date si es una cadena válida
-      
-      const nombreMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-      let fechaFormateada = '';
-      
-      if (fechaAdopcion) {
-        const dia = fechaAdopcion.getDate();
-        const mes = fechaAdopcion.getMonth();
-        const año = fechaAdopcion.getFullYear();
-        fechaFormateada = `${dia} ${nombreMeses[mes]} ${año}`;
-      }
       
       return {
         'Nombre': adopcion.perrito.nombre,
-        'Fecha de adopcion': fechaFormateada,
+        'Fecha de adopcion': adopcion.strFechaAdopcion,
       };
     });    
 

@@ -70,16 +70,9 @@
                   #
                 </th>
                 <th style="text-transform: none; font-size: inherit">
-                  Nombre completo
+                  Nombre
                 </th>
-                <th style="text-transform: none; font-size: inherit">Email</th>
-                <th style="text-transform: none; font-size: inherit">Rol</th>
-                <th
-                  style="text-transform: none; font-size: inherit"
-                  class="text-center"
-                >
-                  Estatus
-                </th>
+                <th style="text-transform: none; font-size: inherit">Correo</th>
                 <th
                   style="text-transform: none; font-size: inherit"
                   class="w-1"
@@ -105,15 +98,6 @@
                 </td>
                 <td>{{ usuario.nombreCompleto }}</td>
                 <td class="text-muted">{{ usuario.correo }}</td>
-                <td class="text-muted">{{ usuario.rol.nombreRol }}</td>
-                <td class="text-center">
-                  <ng-container *ngIf="usuario.estatus; else elseEstatus">
-                    <span class="badge bg-success me-1"> </span> Activo
-                  </ng-container>
-                  <ng-template #elseEstatus>
-                    <span class="badge bg-warning me-1"></span> Inactivo
-                  </ng-template>
-                </td>
                 <td>
                   <div class="d-flex justify-content-between">
                     <button
@@ -260,30 +244,6 @@
                     </p>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="mb-3 custom-green-switch">
-                <label for="estadoActivo" class="form-label">Estatus</label>
-                <label class="form-check form-switch checkbox-verde">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    formControlName="estatus"
-                  />
-                  <span
-                    class="form-check-label"
-                    [ngClass]="
-                      usuarioForm.get('estatus')?.value
-                        ? 'text-success'
-                        : 'text-danger'
-                    "
-                  >
-                    {{
-                      usuarioForm.get("estatus")?.value ? "Activo" : "Inactivo"
-                    }}
-                  </span>
-                </label>
               </div>
             </div>
           </div>
