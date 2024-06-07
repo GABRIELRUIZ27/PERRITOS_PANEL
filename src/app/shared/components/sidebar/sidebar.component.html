@@ -7,7 +7,7 @@
       <div class="collapse navbar-collapse" id="sidebar-menu">
         <ul class="navbar-nav pt-lg-3">
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessInicio'" style="margin-bottom: 10px">
-            <a class="nav-link" [routerLink]="['inicio']">
+            <a class="nav-link" [routerLink]="['inicio']" (click)="cerrarMenu()">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <i class="ti ti-home-2" style="color: white"></i>
               </span>
@@ -15,7 +15,7 @@
             </a>
           </li>
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessUsuarios'" style="margin-bottom: 10px">
-            <a class="nav-link" [routerLink]="['usuarios']">
+            <a class="nav-link" [routerLink]="['usuarios']" (click)="cerrarMenu()">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <i class="ti ti-users" style="color: white"></i>
               </span>
@@ -23,7 +23,7 @@
             </a>
           </li>
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessPerritos'" style="margin-bottom: 10px">
-            <a class="nav-link" [routerLink]="['perritos']">
+            <a class="nav-link" [routerLink]="['perritos']" (click)="cerrarMenu()">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <i class="ti ti-dog" style="color: white"></i>
               </span>
@@ -31,7 +31,7 @@
             </a>
           </li>
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessDiscapacidades'" style="margin-bottom: 10px">
-            <a class="nav-link" [routerLink]="['discapacidades']">
+            <a class="nav-link" [routerLink]="['discapacidades']" (click)="cerrarMenu()">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <i class="ti ti-disabled-2" style="color: white"></i>
               </span>
@@ -39,7 +39,7 @@
             </a>
           </li>
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *appHasClaim="'CanAccessAdopciones'" style="margin-bottom: 10px">
-            <a class="nav-link" [routerLink]="['adopciones']">
+            <a class="nav-link" [routerLink]="['adopciones']" (click)="cerrarMenu()">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <i class="ti ti-home-2" style="color: white"></i>
               </span>
